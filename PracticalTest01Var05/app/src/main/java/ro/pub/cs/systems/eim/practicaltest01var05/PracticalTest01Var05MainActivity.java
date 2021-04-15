@@ -21,6 +21,7 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
     public Button buttonBottomLeft;
     public Button buttonBottomRight;
     public Button buttonCenter;
+    public Button buttonNavigate;
 
 
     public Integer buttonClicks = 0;
@@ -36,7 +37,7 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view){
             buttonClicks++;
-            if (buttonList.getText().toString().length() != 0)
+            if (view.getId() != R.id.button_navigate && buttonList.getText().toString().length() != 0)
                 buttonList.append(Constants.DELIMITER);
 
             switch(view.getId()){
@@ -56,7 +57,11 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
                     buttonList.append(Constants.BOTTOM_RIGHT);
                     break;
                 case R.id.button_navigate:
-
+                    buttonClicks--;
+                    Intent intent = new Intent(getApplicationContext(), PracticalTest01Var05SecondaryActivity.class);
+                    intent.putExtra(Constants.BUTTON_LIST, buttonList.getText().toString());
+                    startActivityForResult(intent, Constants.SECONDARY_ACTIVITY_REQUEST_CODE);
+                    break;
             }
         }
     }
@@ -81,12 +86,16 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
         buttonBottomLeft = (Button)findViewById(R.id.button_bottom_left);
         buttonBottomRight = (Button)findViewById(R.id.button_bottom_right);
         buttonCenter = (Button)findViewById(R.id.button_center);
+        buttonNavigate = (Button)findViewById(R.id.button_navigate);
+
 
         buttonTopLeft.setOnClickListener(buttonClickListener);
         buttonTopRight.setOnClickListener(buttonClickListener);
         buttonBottomLeft.setOnClickListener(buttonClickListener);
         buttonBottomRight.setOnClickListener(buttonClickListener);
         buttonCenter.setOnClickListener(buttonClickListener);
+        buttonNavigate.setOnClickListener(buttonClickListener);
+
 
         if (savedInstanceState != null && savedInstanceState.containsKey(Constants.BUTTON_CLICKS)) {
             buttonClicks = savedInstanceState.getInt(Constants.BUTTON_CLICKS);
@@ -120,24 +129,15 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
     }
 
 
-    /*@Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == Constants.SECONDARY_ACTIVITY_REQUEST_CODE) {
-            Toast.makeText(this, "The sum is: " + resultCode, Toast.LENGTH_LONG).show();
-            all_terms_sum = resultCode;
-        }
-
-        if (serviceStatus.equals(Constants.SERVICE_STOPPED) && all_terms_sum > 10){
-            Intent intentS = new Intent(getApplicationContext(), Colocviu1_2Service.class);
-            intentS.putExtra(Constants.EXTRA_MESSAGE, all_terms_sum);
-            getApplicationContext().startService(intentS);
-            serviceStatus = Constants.SERVICE_STARTED;
-        }
-
+        if (requestCode == Constants.SECONDARY_ACTIVITY_REQUEST_CODE)
+            Toast.makeText(this, "Secondary activity result: " + resultCode, Toast.LENGTH_LONG).show();
+        buttonList.setText(Constants.EMPTY);
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
-
+    /*
     @Override
     protected void onResume() {
         super.onResume();
