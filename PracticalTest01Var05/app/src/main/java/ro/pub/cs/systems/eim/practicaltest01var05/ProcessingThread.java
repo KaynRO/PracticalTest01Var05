@@ -12,13 +12,12 @@ import android.os.Process;
 public class ProcessingThread extends Thread {
     private final Context context;
     private boolean isRunning = true;
-    private final Random random = new Random();
 
-    private final Integer sum;
+    private final String buttonList;
 
-    public ProcessingThread(Context context, Integer sum) {
+    public ProcessingThread(Context context, String buttonList) {
         this.context = context;
-        this.sum = sum;
+        this.buttonList = buttonList;
     }
 
 
@@ -26,23 +25,27 @@ public class ProcessingThread extends Thread {
     public void run() {
         Log.d(Constants.PROCESSING_THREAD_TAG, "Thread has started! PID: " + Process.myPid() + " TID: " + Process.myTid());
         while (isRunning) {
-            sendMessage();
-            sleep();
+            String[] list = buttonList.split(Constants.DELIMITER);
+            for(String element: list){
+                sendMessage(element);
+                sleep();
+            }
+
         }
         Log.d(Constants.PROCESSING_THREAD_TAG, "Thread has stopped!");
     }
 
-    private void sendMessage() {
+    private void sendMessage(String message) {
         Intent intent = new Intent();
-        intent.setAction(Constants.actionTypes[random.nextInt(Constants.actionTypes.length)]);
+        intent.setAction(Constants.actionType);
         intent.putExtra(Constants.BROADCAST_RECEIVER_EXTRA,
-                new Date(System.currentTimeMillis()) + " " + sum);
+                new Date(System.currentTimeMillis()) + " " + message);
         context.sendBroadcast(intent);
     }
 
     private void sleep() {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(5000);
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
         }

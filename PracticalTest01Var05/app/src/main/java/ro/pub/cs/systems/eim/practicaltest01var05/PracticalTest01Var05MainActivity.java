@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
+import static ro.pub.cs.systems.eim.practicaltest01var05.Constants.DELIMITER;
+
 public class PracticalTest01Var05MainActivity extends AppCompatActivity {
     public TextView buttonList;
     public Button buttonTopLeft;
@@ -37,8 +39,16 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view){
             buttonClicks++;
-            if (view.getId() != R.id.button_navigate && buttonList.getText().toString().length() != 0)
-                buttonList.append(Constants.DELIMITER);
+            if (view.getId() != R.id.button_navigate && buttonList.getText().toString().length() != 0){
+                if (serviceStatus.equals(Constants.SERVICE_STOPPED) && buttonList.getText().toString().split(Constants.DELIMITER).length - 1 > Constants.BUTTON_LIST_TRASHHOLD){
+                    System.out.println("YES");
+                    Intent intentS = new Intent(getApplicationContext(), PracticalTest01Var05Service.class);
+                    intentS.putExtra(Constants.BUTTON_LIST, buttonList.getText().toString());
+                    getApplicationContext().startService(intentS);
+                    serviceStatus = Constants.SERVICE_STARTED;
+                }
+                buttonList.append(DELIMITER);
+            }
 
             switch(view.getId()){
                 case R.id.button_top_left:
@@ -105,9 +115,7 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
         else
             buttonClicks = 0;
 
-        for (int index = 0; index < Constants.actionTypes.length; index++) {
-            intentFilter.addAction(Constants.actionTypes[index]);
-        }
+            intentFilter.addAction(Constants.actionType);
     }
 
 
@@ -137,7 +145,7 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
-    /*
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -153,10 +161,9 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         Intent intent = new Intent(this, PracticalTest01Var05Service.class);
         stopService(intent);
         super.onDestroy();
     }
-     */
 }

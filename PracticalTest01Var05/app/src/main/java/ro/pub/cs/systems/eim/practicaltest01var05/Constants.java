@@ -12,6 +12,7 @@ public class Constants {
     public static final String BUTTON_LIST = "List of pressed buttons: ";
     public static final Integer VERIFY = 1;
     public static final Integer CANCEL = 0;
+    public static Integer BUTTON_LIST_TRASHHOLD = 3;
 
     public static final String EXTRA_MESSAGE = "message";
     public static final String PROCESSING_THREAD_TAG = "[THREAD] ";
@@ -19,9 +20,7 @@ public class Constants {
     public static final String BROADCAST_RECEIVER_TAG = "[BROADCAST] ";
     public static final String SERVICE_STARTED = "Service Started";
     public static final String SERVICE_STOPPED = "Service Stopped";
-    public static final String[] actionTypes = {
-            "ro.pub.cs.systems.eim.Colocviu1_2.sum"
-    };
+    public static final String actionType = "ro.pub.cs.systems.eim.practicaltest01var05.button_list";
 
     public static final Integer SECONDARY_ACTIVITY_REQUEST_CODE = 0;
 }
