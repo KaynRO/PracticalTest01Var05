@@ -30,7 +30,6 @@ public class ProcessingThread extends Thread {
                 sendMessage(element);
                 sleep();
             }
-
         }
         Log.d(Constants.PROCESSING_THREAD_TAG, "Thread has stopped!");
     }

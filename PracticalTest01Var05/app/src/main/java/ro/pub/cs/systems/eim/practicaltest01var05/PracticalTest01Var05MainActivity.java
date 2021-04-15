@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,8 +41,7 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
         public void onClick(View view){
             buttonClicks++;
             if (view.getId() != R.id.button_navigate && buttonList.getText().toString().length() != 0){
-                if (serviceStatus.equals(Constants.SERVICE_STOPPED) && buttonList.getText().toString().split(Constants.DELIMITER).length - 1 > Constants.BUTTON_LIST_TRASHHOLD){
-                    System.out.println("YES");
+                if (serviceStatus.equals(Constants.SERVICE_STOPPED) && buttonList.getText().toString().split(Constants.DELIMITER).length + 1 > Constants.BUTTON_LIST_TRASHHOLD){
                     Intent intentS = new Intent(getApplicationContext(), PracticalTest01Var05Service.class);
                     intentS.putExtra(Constants.BUTTON_LIST, buttonList.getText().toString());
                     getApplicationContext().startService(intentS);
@@ -80,7 +80,7 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
     private class MessageBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(getApplicationContext(), Constants.BROADCAST_RECEIVER_TAG + Objects.requireNonNull(intent.getStringExtra(Constants.BROADCAST_RECEIVER_EXTRA)), Toast.LENGTH_LONG).show();
+            Log.d(Constants.BROADCAST_RECEIVER_TAG, Objects.requireNonNull(intent.getStringExtra(Constants.BROADCAST_RECEIVER_EXTRA)));
         }
     }
 
